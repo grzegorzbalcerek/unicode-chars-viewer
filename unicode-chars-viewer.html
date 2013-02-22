@@ -1,0 +1,113 @@
+<xhtml>
+<head>
+<title>Unicode characters viewer</title>
+<style type="text/css">
+  body { font-family: 'Lucida Sans Unicode'; }
+  p table { font-size:8pt; }
+  td div.chr { font-size:12pt; }
+  td div.dec { font-size:7pt; margin:0; color:green; }
+  td div.hex { font-size:7pt;  margin:0; color:blue; }
+  .selected { background-color:yellow; }
+</style>
+</head>
+<body>
+<input type="button" value="previous" onclick="prevPage()"/>
+<input type="button" value="go to page" onclick="goToPage()"/>
+<input type="button" value="next" onclick="nextPage()"/>
+<input type="button" value="0" onclick="page0()"/>
+<input type="button" value="1" onclick="page1()"/>
+<input type="button" value="2" onclick="page2()"/>
+<input type="button" value="3" onclick="page3()"/>
+<input type="button" value="20" onclick="page32()"/>
+<input type="button" value="21" onclick="page33()"/>
+<input type="button" value="22" onclick="page34()"/>
+<input type="button" value="23" onclick="page35()"/>
+<input type="button" value="24" onclick="page36()"/>
+<input type="button" value="25" onclick="page37()"/>
+<input type="button" value="26" onclick="page38()"/>
+<input type="button" value="27" onclick="page39()"/>
+<div id="content">
+
+</div>
+
+<p><small>Emacs: C-x 8 RET &#x2192; ucs-insert; C-x =; Wordpad: &lt;hex code&gt; Alt-x.</small></p>
+
+<script>
+var selected = [/*128,132,133,147,148,149,150,151,167,183,215,247,
+ 0xf3,0x105,0x107,0x119,0x142,0x144,0x15b,0x17a,0x17c,
+ 0x2013,0x2014,0x201c,0x201d,0x201e,0x2022,0x2026,0x20ac,
+ 0x2190,0x2192,0x21d2,
+ 0x2212,
+ 0x2460*/]
+function isSelected(n) {
+  for(var j=0; j<selected.length; j++)
+    if (selected[j] == n) return true;
+  return false;
+}
+function genrow(n, f) {
+  var result = ""
+  result += '<tr>'
+  for (var k=0; k<16; k+=1) {
+    if (k+n > 0) {
+      result += '<td'+(isSelected(k+n) ? ' class="selected"' : '')+'>'+
+      '<div class="hex">'+(n + k).toString(16)+'</div>'+
+      '<div class="chr">&#'+(n + k)+';</div>'+
+      '<div class="dec">'+(n + k)+'</div>'+
+      '</td>'
+    } else { result += '<td/>' }
+  }
+  result += '</tr>'
+  return result
+}
+function genpage(n) {
+  var result = ""
+  result += '<h2>page: ' + n + ' 0x' + n.toString(16) + '</h2>'
+  result += '<table><tr><td>'
+  result += gentable(n,0)
+  result += '</td><td>'
+  result += gentable(n,128)
+  result += '</td></tr></table>'
+  return result
+}
+function gentable(n,d) {
+  var result = ""
+  result += '<table>'
+  for (var k=0; k<8; k+=1) result += genrow(256*n+16*k+d)
+  result += '</table>'
+  return result
+}
+function showPage(num) {
+  var content = document.getElementById("content")
+  content.innerHTML = '<h2>'+genpage(num)+'</h2>'
+}
+function prevPage() {
+  pageNum -= 1
+  if (pageNum < 0) pageNum = 0
+  showPage(pageNum)
+}
+function nextPage() {
+  pageNum += 1
+  showPage(pageNum)
+}
+function goToPage() {
+  var page = prompt("Page number: ")
+  pageNum = 1*eval(page)
+  showPage(pageNum)
+}
+function page0() { pageNum = 0; showPage(pageNum) }
+function page1() { pageNum = 1; showPage(pageNum) }
+function page2() { pageNum = 2; showPage(pageNum) }
+function page3() { pageNum = 3; showPage(pageNum) }
+function page32() { pageNum = 32; showPage(pageNum) }
+function page33() { pageNum = 33; showPage(pageNum) }
+function page34() { pageNum = 34; showPage(pageNum) }
+function page35() { pageNum = 35; showPage(pageNum) }
+function page36() { pageNum = 36; showPage(pageNum) }
+function page37() { pageNum = 37; showPage(pageNum) }
+function page38() { pageNum = 38; showPage(pageNum) }
+function page39() { pageNum = 39; showPage(pageNum) }
+var pageNum = 0
+showPage(pageNum)
+</script>
+</body>
+</xhtml>
