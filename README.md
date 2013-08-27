@@ -2,4 +2,4 @@
 
 ## License
 
-The LICENSE.txt file contains the license for this software.
+The license conditions are included in a comment inside the HTML file.
